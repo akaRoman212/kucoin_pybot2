@@ -7,9 +7,30 @@ Created on Sat Dec 30 22:47:41 2023
 """
 import time
 import pprint
-
+import telegram
+import asyncio
 from kucoin.client import Client
 
+
+
+
+async def send_telegram_notification(token, chat_id, message):
+    try:
+        bot = telegram.Bot(token=token)
+        response = await bot.send_message(chat_id=chat_id, text=message)
+        print("Notification sent successfully:", response)
+    except Exception as e:
+        print("Error sending notification:", e)
+
+
+   
+async def main(msg):
+    bot_token = "6756284122:AAGQMQBKhhVII_SQJpXe1GBQ8zLbjUSSO38"
+    chat_id = "-4038816099"
+    
+
+    await send_telegram_notification(bot_token, chat_id, msg)
+    
 
 
 api_key = '6224bde70fd8a700019e8bc5'
@@ -55,6 +76,9 @@ while True:
         for y in range(len(up_token)):
             if up_token[y] not in tokens:
                 print(up_token[y])
+                msg = up_token[y]
+                if __name__ == "__main__":
+                   asyncio.get_event_loop().run_until_complete(main(msg))
                 tokens.append(up_token[y])
                 seconds = time.time()
                 print(seconds)
@@ -74,7 +98,7 @@ while True:
                 #     # error, wrong access_hash, flood_error, etc
                 #     print(e)
         
-        break
+   
     
     print("Kucoin Searching..............")
     time.sleep(10)
